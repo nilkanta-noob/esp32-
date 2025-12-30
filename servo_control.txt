@@ -1,0 +1,60 @@
+// this sketch takes value from the potentiometer and changed the servo angle 
+#include <ESP32Servo.h>
+Servo myservo;
+
+int potpin=34;
+int servoPin=18;
+int ADC_Max=4095; // digital value
+int val ,angle;
+
+
+ // the pot gives the output voltage (3.3 v - 0 v ) through the middle pin (wiper)
+ // left pin to vcc - 3.3v , right most pin - gnd 
+ // the middle pin connected to analog pin of esp to read the alanog volatage and 
+ // map it to a value range of (0 - 4096) analog to digital converter 
+ // and that value of the digital value ( 0 - 4096 ) -- (0 -- 180degree) then servo 
+ // rotates 
+
+void setup() {
+  Serial.begin(115200);
+
+  // put your setup code here, to run once:
+  	ESP32PWM::allocateTimer(0);
+	ESP32PWM::allocateTimer(1);
+	ESP32PWM::allocateTimer(2);
+	ESP32PWM::allocateTimer(3);
+	myservo.setPeriodHertz(50);
+
+  myservo.attach(servoPin,500,2400); // max angle by pwm pulse 
+
+
+
+}
+int readSmoothADC(int pin) {
+  long sum = 0;
+  for (int i = 0; i < 10; i++) {
+    sum += analogRead(pin);
+    delayMicroseconds(200);
+  }
+  return sum / 10;
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+
+   val = readSmoothADC(potpin);
+  
+   
+   angle = map(val,0,ADC_Max,0,180);// maps vlaue (0 - 4095)--- angle (0 -- 180)
+   myservo.write(angle);
+   
+   Serial.print("ADC = ");
+  Serial.print(val);
+  Serial.print("  Angle = ");
+  Serial.println(angle);
+
+   delay(50);
+
+
+}
