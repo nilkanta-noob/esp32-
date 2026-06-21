@@ -38,7 +38,4 @@ Telemetry Format & Output: Your code formats this data into readable strings. It
 
 Workstation Monitoring: Finally, the PC/Workstation receives the UART signal. A program like the Serial Monitor Console listens on the assigned COM port at 115200 baud to display the final output to the user, confirming your loop is complete and data has been processed successfully.
 
-### Installation & Deployment
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/nilkanta/ESP32-WiFi-Sniffer.git](https://github.com/nilkanta/ESP32-WiFi-Sniffer.git)
+
