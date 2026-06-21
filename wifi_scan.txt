@@ -1,0 +1,71 @@
+#include <WiFi.h>
+
+int flg=1;
+bool done=false;
+
+void setup() {
+  Serial.begin(115200);
+  delay(1000);
+
+  Serial.println("Starting WiFi scan...");
+
+  // Set WiFi to station mode (important)
+  WiFi.mode(WIFI_STA);
+
+  // Disconnect from any previously saved network
+  WiFi.disconnect();
+  delay(100);
+
+  
+}
+void scan(){
+  // Start scan
+  int n = WiFi.scanNetworks();
+
+  if (n == 0) {
+    Serial.println("No WiFi networks found");
+  } else {
+    Serial.print(n);
+    Serial.println(" networks found:\n");
+
+    for (int i = 0; i < n; i++) {
+      Serial.print(i + 1);
+      Serial.print(": ");
+      Serial.print(WiFi.SSID(i));      // Network name
+      Serial.print(" | RSSI: ");
+      Serial.print(WiFi.RSSI(i));      // Signal strength
+      Serial.print(" dBm");
+      Serial.print(" | Channel: ");
+      Serial.print(WiFi.channel(i));   // WiFi channel
+      Serial.print(" | Encryption: ");
+      Serial.println(WiFi.encryptionType(i));
+      delay(10);
+    }
+  }
+
+
+  Serial.print(flg);
+  Serial.println("   Scan complete");
+  Serial.println("-----------------------xxxx----------------------");
+  
+
+}
+
+void loop() {
+  if(done){
+    return;
+  }
+
+
+ scan();
+ flg++;
+
+ if(flg>5){
+  done=true;
+  Serial.print("Scanning completed");
+ }
+
+ delay(1000);
+
+
+}
